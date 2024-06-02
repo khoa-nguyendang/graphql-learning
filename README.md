@@ -1,2 +1,5 @@
-# grapql-learning
-practice grapql  golang
+# graphql-learning
+practice graphql  golang
+
+
+
