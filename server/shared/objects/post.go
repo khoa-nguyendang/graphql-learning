@@ -59,7 +59,7 @@ func InitPostType(db *sql.DB, authorType *graphql.Object) *graphql.Object {
 			},
 			"author": &graphql.Field{
 				Type:    authorType,
-				Resolve: resolvers.AuthorResolver(db),
+				Resolve: resolvers.PostAuthor(db),
 			},
 		},
 	})

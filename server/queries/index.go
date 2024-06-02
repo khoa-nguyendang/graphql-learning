@@ -37,12 +37,12 @@ func BuildQuery(db *sql.DB, objectTypes map[string]*graphql.Object) *graphql.Obj
 						Type: graphql.Int,
 					},
 				},
-				Resolve: resolvers.AuthorResolver(db),
+				Resolve: resolvers.Author(db),
 			},
 			"authors": &graphql.Field{
 				Type:        graphql.NewList(objectTypes[objects.AuthorType]),
 				Description: "List of authors.",
-				Resolve:     resolvers.AuthorsResolver(db),
+				Resolve:     resolvers.Authors(db),
 			},
 			"post": &graphql.Field{
 				Type:        objectTypes[objects.PostType],

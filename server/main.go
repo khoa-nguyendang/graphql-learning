@@ -1,10 +1,14 @@
 package main
 
 import (
+	"io"
+	"log"
 	"net/http"
+	"os"
 
 	"server/mutations"
 	"server/queries"
+	"server/shared"
 	"server/shared/objects"
 
 	"github.com/graphql-go/graphql"
@@ -12,14 +16,15 @@ import (
 	_ "github.com/lib/pq"
 )
 
-func CheckErr(err error) {
-	if err != nil {
-		panic(err)
-	}
+func init() {
+	log.SetOutput(os.Stdout)
+	log.SetFlags(log.Lshortfile)
 }
 
 func main() {
-	db := GetDB()
+	cfg := loadConfig()
+	db := GetDB(cfg)
+	RunMigration(db)
 	defer db.Close()
 	objSvc := objects.NewObject(db)
 	types := objSvc.GetTypes()
@@ -38,5 +43,12 @@ func main() {
 
 	// serve HTTP
 	http.Handle("/graphql", h)
-	http.ListenAndServe(":28080", nil)
+	http.HandleFunc("/ping", func(w http.ResponseWriter, r *http.Request) { io.WriteString(w, `pong`) })
+	http.ListenAndServe(":8080", nil)
+}
+
+func loadConfig() *Config {
+	cfg, err := GetConfig("/app/config")
+	shared.CheckErr(err)
+	return cfg
 }

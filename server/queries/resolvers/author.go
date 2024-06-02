@@ -11,8 +11,8 @@ import (
 
 // TODO: use BIZ or Repository here
 
-// AuthorResolver
-func AuthorResolver(db *sql.DB) graphql.FieldResolveFn {
+// Author
+func Author(db *sql.DB) graphql.FieldResolveFn {
 	return func(params graphql.ResolveParams) (interface{}, error) {
 		id, _ := params.Args["id"].(int)
 		author := &entities.Author{}
@@ -22,8 +22,8 @@ func AuthorResolver(db *sql.DB) graphql.FieldResolveFn {
 	}
 }
 
-// AuthorsResolver
-func AuthorsResolver(db *sql.DB) graphql.FieldResolveFn {
+// Authors
+func Authors(db *sql.DB) graphql.FieldResolveFn {
 	return func(params graphql.ResolveParams) (interface{}, error) {
 		rows, err := db.Query("SELECT id, name, email FROM authors")
 		shared.CheckErr(err)
