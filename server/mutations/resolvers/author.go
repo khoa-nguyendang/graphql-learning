@@ -17,7 +17,7 @@ func CreateAuthor(db *sql.DB) graphql.FieldResolveFn {
 
 		var lastInsertId int
 		err := db.QueryRow("INSERT INTO authors(name, email, created_at) VALUES($1, $2, $3) returning id;", name, email, createdAt).Scan(&lastInsertId)
-		shared.CheckErr(err)
+		shared.ErrorHandling(err)
 
 		newAuthor := &entities.Author{
 			ID:        lastInsertId,
@@ -37,10 +37,10 @@ func UpdateAuthor(db *sql.DB) graphql.FieldResolveFn {
 		email, _ := params.Args["email"].(string)
 
 		stmt, err := db.Prepare("UPDATE authors SET name = $1, email = $2 WHERE id = $3")
-		shared.CheckErr(err)
+		shared.ErrorHandling(err)
 
 		_, err2 := stmt.Exec(name, email, id)
-		shared.CheckErr(err2)
+		shared.ErrorHandling(err2)
 
 		newAuthor := &entities.Author{
 			ID:    id,
@@ -56,10 +56,10 @@ func DeleteAuthor(db *sql.DB) graphql.FieldResolveFn {
 		id, _ := params.Args["id"].(int)
 
 		stmt, err := db.Prepare("DELETE FROM authors WHERE id = $1")
-		shared.CheckErr(err)
+		shared.ErrorHandling(err)
 
 		_, err2 := stmt.Exec(id)
-		shared.CheckErr(err2)
+		shared.ErrorHandling(err2)
 
 		return nil, nil
 	}

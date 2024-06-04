@@ -44,7 +44,7 @@ func ParseConfig(v *viper.Viper) (*Config, error) {
 	var c Config
 
 	err := v.Unmarshal(&c)
-	shared.CheckErr(err)
+	shared.ErrorHandling(err)
 
 	return &c, nil
 }
@@ -52,9 +52,9 @@ func ParseConfig(v *viper.Viper) (*Config, error) {
 // Get config
 func GetConfig(filePathNoExtension string) (*Config, error) {
 	cfgFile, err := LoadConfig(filePathNoExtension)
-	shared.CheckErr(err)
+	shared.ErrorHandling(err)
 
 	cfg, err := ParseConfig(cfgFile)
-	shared.CheckErr(err)
+	shared.ErrorHandling(err)
 	return cfg, nil
 }

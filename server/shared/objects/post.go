@@ -3,7 +3,7 @@ package objects
 import (
 	"database/sql"
 	"server/entities"
-	"server/queries/resolvers"
+	"server/shared/objects/resolvers"
 
 	"github.com/graphql-go/graphql"
 )

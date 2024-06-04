@@ -15,14 +15,14 @@ func GetDB(c *Config) *sql.DB {
 	dbinfo := fmt.Sprintf("host=%s port=%s user=%s password=%s dbname=%s sslmode=disable",
 		c.Postgres.Host, c.Postgres.Port, c.Postgres.User, c.Postgres.Password, c.Postgres.Dbname)
 	db, err := sql.Open("postgres", dbinfo)
-	shared.CheckErr(err)
+	shared.ErrorHandling(err)
 	return db
 }
 
 func RunMigration(db *sql.DB) {
 	driver, err := postgres.WithInstance(db, &postgres.Config{})
-	shared.CheckErr(err)
+	shared.ErrorHandling(err)
 	m, err := migrate.NewWithDatabaseInstance("file:///migrations", "postgres", driver)
-	shared.CheckErr(err)
+	shared.ErrorHandling(err)
 	m.Up()
 }

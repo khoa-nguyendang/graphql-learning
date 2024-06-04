@@ -2,7 +2,7 @@ package shared
 
 import "log"
 
-func CheckErr(err error) {
+func ErrorHandling(err error) {
 	if err != nil {
 		log.Default().Printf("error: %v", err)
 		panic(err)

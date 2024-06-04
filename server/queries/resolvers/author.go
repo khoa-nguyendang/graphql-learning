@@ -17,7 +17,7 @@ func Author(db *sql.DB) graphql.FieldResolveFn {
 		id, _ := params.Args["id"].(int)
 		author := &entities.Author{}
 		err := db.QueryRow("select id, name, email from authors where id = $1", id).Scan(&author.ID, &author.Name, &author.Email)
-		shared.CheckErr(err)
+		shared.ErrorHandling(err)
 		return author, nil
 	}
 }
@@ -26,14 +26,14 @@ func Author(db *sql.DB) graphql.FieldResolveFn {
 func Authors(db *sql.DB) graphql.FieldResolveFn {
 	return func(params graphql.ResolveParams) (interface{}, error) {
 		rows, err := db.Query("SELECT id, name, email FROM authors")
-		shared.CheckErr(err)
+		shared.ErrorHandling(err)
 		var authors []*entities.Author
 
 		for rows.Next() {
 			author := &entities.Author{}
 
 			err = rows.Scan(&author.ID, &author.Name, &author.Email)
-			shared.CheckErr(err)
+			shared.ErrorHandling(err)
 			authors = append(authors, author)
 		}
 

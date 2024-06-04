@@ -1,10 +1,20 @@
 # graphql-learning
 practice graphql  golang
 
+# project's requirements
+
+```
+go version go1.21.0 linux/amd64
+node v20.11.1
+pnpm v9.1.1
+Docker version 26.1.1 
+Docker Compose version v2.27.0
+```
 
 # Start application
 
 ```#bash
+$ docker-compose build
 $ docker-compose up
 ```
 
@@ -25,7 +35,7 @@ mutation CreateAuthor {
 
 # Add new Post
 ```
-mutation CreateAuthor {
+mutation CreatePost {
     createPost(title: "Post 2", content: "Post 2", author_id: 1) {
         content
         created_at

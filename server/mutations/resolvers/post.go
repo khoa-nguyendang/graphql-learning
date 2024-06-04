@@ -18,7 +18,7 @@ func CreatePost(db *sql.DB) graphql.FieldResolveFn {
 
 		var lastInsertId int
 		err := db.QueryRow("INSERT INTO posts(title, content, author_id, created_at) VALUES($1, $2, $3, $4) returning id;", title, content, authorId, createdAt).Scan(&lastInsertId)
-		shared.CheckErr(err)
+		shared.ErrorHandling(err)
 
 		newPost := &entities.Post{
 			ID:        lastInsertId,
@@ -40,10 +40,10 @@ func UpdatePost(db *sql.DB) graphql.FieldResolveFn {
 		authorId, _ := params.Args["author_id"].(int)
 
 		stmt, err := db.Prepare("UPDATE posts SET title = $1, content = $2, author_id = $3 WHERE id = $4")
-		shared.CheckErr(err)
+		shared.ErrorHandling(err)
 
 		_, err2 := stmt.Exec(title, content, authorId, id)
-		shared.CheckErr(err2)
+		shared.ErrorHandling(err2)
 
 		newPost := &entities.Post{
 			ID:       id,
@@ -61,10 +61,10 @@ func DeletePost(db *sql.DB) graphql.FieldResolveFn {
 		id, _ := params.Args["id"].(int)
 
 		stmt, err := db.Prepare("DELETE FROM posts WHERE id = $1")
-		shared.CheckErr(err)
+		shared.ErrorHandling(err)
 
 		_, err2 := stmt.Exec(id)
-		shared.CheckErr(err2)
+		shared.ErrorHandling(err2)
 
 		return nil, nil
 	}
